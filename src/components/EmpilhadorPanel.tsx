@@ -965,8 +965,14 @@ export default function EmpilhadorPanel({ user, empresa, theme = 'dark' }: Empil
     if (!checklistDone) return [];
     return tasks.filter(t => {
       if (isTaskExpired(t, 5)) return false;
+      const match = isSameCollaborator(t.operador, activeOperatorClean, empresaData.colaboradores);
+      console.log('DEBUG: Task operator match:', {
+        taskOperador: t.operador,
+        activeOperator: activeOperatorClean,
+        match
+      });
       if (!t.operador || t.operador === 'TODOS' || t.operador.toUpperCase().includes('TODOS')) return true;
-      return isSameCollaborator(t.operador, activeOperatorClean, empresaData.colaboradores);
+      return match;
     });
   }, [checklistDone, tasks, activeOperatorClean, empresaData.colaboradores]);
 
